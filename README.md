@@ -11,7 +11,7 @@ Package Manager ([npm](https://www.npmjs.com/)).
 
 To build the image, run the following command:
 ```console
-$ cargo build
+$ docker build -t <username>/faas-wasi-example .
 ```
 
 ### WASM test module
