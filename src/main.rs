@@ -48,14 +48,6 @@ impl ResponseHandler for ResHandler {
     }
 }
 
-fn create_request_handler() -> Box<dyn RequestExtractor> {
-    Box::new(ReqHandler {})
-}
-
-fn create_response_handler() -> Box<dyn ResponseHandler> {
-    Box::new(ResHandler {})
-}
-
 fn main() {
-    wasm_executor::start(create_request_handler, create_response_handler);
+    wasm_executor::start(|| Box::new(ReqHandler {}), || Box::new(ResHandler {}));
 }
