@@ -13,12 +13,13 @@ use wasm_executor::ResponseHandler;
 struct ReqHandler {}
 
 impl RequestExtractor for ReqHandler {
-    fn extract_args(&self, context: Context) -> Vec<RuntimeValue> {
+    fn extract_args(&self, context: &Context) -> Vec<RuntimeValue> {
         let params = form_urlencoded::parse(context.query.unwrap().as_bytes());
         let mut vec = Vec::new();
         for p in params.into_iter() {
             vec.push(RuntimeValue::I32(p.1.parse::<i32>().unwrap()));
         }
+        println!("Extracted args for {}: {:?}", context.function_name, vec);
         return vec;
     }
 }
@@ -27,14 +28,13 @@ struct ResHandler {}
 impl ResponseHandler for ResHandler {
     fn create_response(
         &self,
+        context: &Context,
         result: Result<ActionOutcome, ActionError>,
-        module_path: &str,
-        function_name: &str,
     ) -> Response {
         let body = match result.unwrap() {
             ActionOutcome::Returned { values } => format!(
                 "module: {}, function: {}, returned {:#}",
-                module_path, function_name, values[0]
+                context.module_path, context.function_name, values[0]
             )
             .to_string()
             .into_bytes(),
