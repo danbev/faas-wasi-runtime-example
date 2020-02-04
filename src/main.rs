@@ -31,17 +31,15 @@ impl ResponseHandler for ResHandler {
         context: &Context,
         result: Result<ActionOutcome, ActionError>,
     ) -> Response {
-        let body = match result.unwrap() {
+        let msg = match result.unwrap() {
             ActionOutcome::Returned { values } => format!(
                 "module: {}, function: {}, returned {:#}",
                 context.module_path, context.function_name, values[0]
-            )
-            .to_string()
-            .into_bytes(),
-            ActionOutcome::Trapped { message } => format!("Trap from within function: {}", message)
-                .to_string()
-                .into_bytes(),
+            ),
+            ActionOutcome::Trapped { message } => format!(
+                "Trap from within function: {}", message),
         };
+        let body = msg.to_string().into_bytes();
         return Response::new()
             .with_header(ContentLength(body.len() as u64))
             .with_body(body);
