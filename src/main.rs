@@ -1,14 +1,13 @@
 extern crate url;
 extern crate wasm_executor;
 
-use hyper::header::ContentLength;
-use hyper::server::Response;
 use url::form_urlencoded;
 use wasmtime_jit::{ActionError, ActionOutcome, RuntimeValue};
 
 use wasm_executor::Context;
 use wasm_executor::RequestExtractor;
 use wasm_executor::ResponseHandler;
+use wasm_executor::WasmResponse;
 
 struct ReqHandler {}
 
@@ -30,7 +29,7 @@ impl ResponseHandler for ResHandler {
         &self,
         context: &Context,
         result: Result<ActionOutcome, ActionError>,
-    ) -> Response {
+    ) -> WasmResponse {
         let msg = match result.unwrap() {
             ActionOutcome::Returned { values } => format!(
                 "module: {}, function: {}, returned {:#}",
@@ -40,9 +39,7 @@ impl ResponseHandler for ResHandler {
                 "Trap from within function: {}", message),
         };
         let body = msg.to_string().into_bytes();
-        return Response::new()
-            .with_header(ContentLength(body.len() as u64))
-            .with_body(body);
+        return WasmResponse{body, headers: None};
     }
 }
 
