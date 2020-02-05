@@ -2,12 +2,8 @@ extern crate url;
 extern crate wasm_executor;
 
 use url::form_urlencoded;
+use wasm_executor::{Context, RequestExtractor, ResponseHandler, WasmResponse};
 use wasmtime_jit::{ActionError, ActionOutcome, RuntimeValue};
-
-use wasm_executor::Context;
-use wasm_executor::RequestExtractor;
-use wasm_executor::ResponseHandler;
-use wasm_executor::WasmResponse;
 
 struct ReqHandler {}
 
@@ -35,11 +31,10 @@ impl ResponseHandler for ResHandler {
                 "module: {}, function: {}, returned {:#}",
                 context.module_path, context.function_name, values[0]
             ),
-            ActionOutcome::Trapped { message } => format!(
-                "Trap from within function: {}", message),
+            ActionOutcome::Trapped { message } => format!("Trap from within function: {}", message),
         };
         let body = msg.to_string().into_bytes();
-        return WasmResponse{body, headers: None};
+        WasmResponse { body, headers: None}
     }
 }
 
