@@ -3,16 +3,16 @@ extern crate wasm_executor;
 
 use url::form_urlencoded;
 use wasm_executor::{Context, RequestExtractor, ResponseHandler, WasmResponse};
-use wasmtime_jit::{ActionError, ActionOutcome, RuntimeValue};
+use wasmtime::{Val, Trap};
 
 struct ReqHandler {}
 
 impl RequestExtractor for ReqHandler {
-    fn extract_args(&self, context: &Context) -> Vec<RuntimeValue> {
+    fn extract_args(&self, context: &Context) -> Vec<Val> {
         let params = form_urlencoded::parse(context.query.unwrap().as_bytes());
         let mut vec = Vec::new();
         for p in params.into_iter() {
-            vec.push(RuntimeValue::I32(p.1.parse::<i32>().unwrap()));
+            vec.push(Val::I32(p.1.parse::<i32>().unwrap()));
         }
         println!("Extracted args for {}: {:?}", context.function_name, vec);
         return vec;
@@ -24,14 +24,14 @@ impl ResponseHandler for ResHandler {
     fn create_response(
         &self,
         context: &Context,
-        result: Result<ActionOutcome, ActionError>,
+        result: Result<Box<[Val]>, Trap>,
     ) -> WasmResponse {
-        let msg = match result.unwrap() {
-            ActionOutcome::Returned { values } => format!(
-                "module: {}, function: {}, returned {:#}",
+        let msg = match result {
+            Ok(values) => format!(
+                "module: {}, function: {}, returned {:?}",
                 context.module_path, context.function_name, values[0]
             ),
-            ActionOutcome::Trapped { message } => format!("Trap from within function: {}", message),
+            Err(e) => format!("Trap from within function: {}", e.message()),
         };
         let body = msg.to_string().into_bytes();
         WasmResponse { body, headers: None}

@@ -8,6 +8,7 @@ edition = "2018"
 
 [dependencies]
 faas-wasm-runtime-image = { path = "../faas-wasi-runtime-image" }
-wasmtime-jit = { git = "https://github.com/CraneStation/wasmtime", package = "wasmtime-jit", rev = "b7d86af0ec6dc6c3d228728f1ce47d0a0033c05f" }
+wasmtime = "0.11.0"
+wasmtime-jit = "0.11.0"
 url = "2.1.1"
 hyper = "0.11.7"
