@@ -415,7 +415,7 @@ dependencies = [
 name = "faas-wasi-runtime-example"
 version = "0.1.0"
 dependencies = [
- "faas-wasm-runtime 0.1.0",
+ "faas-wasm-runtime 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "hyper 0.11.27 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 2.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "wasmtime 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -425,6 +425,7 @@ dependencies = [
 [[package]]
 name = "faas-wasm-runtime"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cloudevents 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures 0.1.29 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1836,6 +1837,7 @@ dependencies = [
 "checksum env_logger 0.6.2 (registry+https://github.com/rust-lang/crates.io-index)" = "aafcde04e90a5226a6443b7aabdb016ba2f8307c847d524724bd9b346dd1a2d3"
 "checksum errno 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)" = "c2a071601ed01b988f896ab14b95e67335d1eeb50190932a1320f7fe3cadc84e"
 "checksum errno-dragonfly 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "14ca354e36190500e1e1fb267c647932382b54053c50b14970856c0b00a35067"
+"checksum faas-wasm-runtime 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "901d8442d7478d182c59c65bc969dc188493feca3c9081f257b4e3c4f6b6410d"
 "checksum faerie 0.14.0 (registry+https://github.com/rust-lang/crates.io-index)" = "74b9ed6159e4a6212c61d9c6a86bee01876b192a64accecf58d5b5ae3b667b52"
 "checksum failure 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)" = "f8273f13c977665c5db7eb2b99ae520952fe5ac831ae4cd09d80c4c7042b5ed9"
 "checksum failure_derive 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)" = "0bc225b78e0391e4b8683440bf2e63c2deeeb2ce5189eab46e2b68c6d3725d08"
