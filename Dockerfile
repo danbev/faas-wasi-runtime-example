@@ -1,11 +1,11 @@
 FROM docker.io/dbevenius/wasm-base-image:latest as cargo-build
 
-RUN rm -rf /home/wasi/src/lib.rs
-COPY . /home/wasi/
+RUN rm /home/wasi/src/*.rs
+COPY Cargo.toml /home/wasi/
+COPY src /home/wasi/src
 
 WORKDIR /home/wasi
 RUN RUSTFLAGS=-Clinker=musl-gcc cargo build --release --target=x86_64-unknown-linux-musl
-RUN RUSTFLAGS=-Clinker=musl-gcc cargo install --force --path . --target=x86_64-unknown-linux-musl
 
 FROM alpine:latest
 
@@ -15,7 +15,7 @@ USER wasi
 
 WORKDIR /home/wasi/bin/
 
-COPY --from=cargo-build /usr/local/cargo/bin/faas-wasi-runtime-example ./wasm-runtime
+COPY --from=cargo-build /home/wasi/target/x86_64-unknown-linux-musl/release/faas-wasi-runtime-example ./wasm-runtime
 RUN chown wasi:wasi wasm-runtime
 COPY module /home/wasi/module
 
