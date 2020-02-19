@@ -9,6 +9,4 @@ edition = "2018"
 [dependencies]
 faas-wasm-runtime = "0.1.0"
 wasmtime = "0.11.0"
-wasmtime-jit = "0.11.0"
 url = "2.1.1"
-hyper = "0.11.7"

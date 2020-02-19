@@ -416,10 +416,8 @@ name = "faas-wasi-runtime-example"
 version = "0.1.0"
 dependencies = [
  "faas-wasm-runtime 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "hyper 0.11.27 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 2.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "wasmtime 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "wasmtime-jit 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
