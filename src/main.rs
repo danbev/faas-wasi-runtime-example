@@ -1,7 +1,6 @@
 extern crate url;
 extern crate wasm_executor;
 
-use url::form_urlencoded;
 use wasm_executor::{Context, RequestExtractor, ResponseHandler, WasmResponse};
 use wasmtime::{Val, Trap};
 
@@ -9,12 +8,10 @@ struct ReqHandler {}
 
 impl RequestExtractor for ReqHandler {
     fn extract_args(&self, context: &Context) -> Vec<Val> {
-        let params = form_urlencoded::parse(context.query.unwrap().as_bytes());
+        println!("CloudEvent: {:?}", context);
         let mut vec = Vec::new();
-        for p in params.into_iter() {
-            vec.push(Val::I32(p.1.parse::<i32>().unwrap()));
-        }
-        println!("Extracted args for {}: {:?}", context.function_name, vec);
+        vec.push(Val::I32(4));
+        vec.push(Val::I32(14));
         return vec;
     }
 }
@@ -33,6 +30,7 @@ impl ResponseHandler for ResHandler {
             ),
             Err(e) => format!("Trap from within function: {}", e.message()),
         };
+        println!("WASM Response: {:#?}", msg);
         let body = msg.to_string().into_bytes();
         WasmResponse { body, headers: None}
     }
